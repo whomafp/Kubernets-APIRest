@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysqldatabase
+  labels:
+    persistentWith: mysqlsv
+spec:
+  selector: 
+    matchLabels:
+      persistentWith: mysqlsv
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        persistentWith: mysqlsv
+        tier: backend
+    spec:
+      containers:
+      - name: db
+        image: whomafp/mysql-api:v1
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: prueba
+        - name: MYSQL_DATABASE
+          value: ITLMajors
+        - name: MYSQL_USER
+          value: root
+        - name: MYSQL_PASSWORD
+          value: prueba
+        ports: 
+        - containerPort: 3306
+        volumeMounts:
+        - name: api-rest-ps
+          mountPath: /var/lib/mysql
+      volumes:
+        - name: api-rest-ps
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-apirest
+  labels:
+    environment: dev
+spec:
+  selector:
+    matchLabels:
+      environment: dev
+      tier: frontend
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        environment: dev
+        tier: frontend
+    spec:
+      containers:
+      - name: apache
+        image: whomafp/apache-api:v1
+        ports: 
+        - containerPort: 80 

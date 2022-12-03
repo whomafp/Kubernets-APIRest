@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: 18240659/domain
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: app.mfonseca.com
+    http: 
+      paths:
+      - path: /service
+        pathType: Prefix
+        backend:
+          service:
+            name: apache
+            port:
+              number: 31006
+        
