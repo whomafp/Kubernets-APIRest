@@ -50,4 +50,3 @@
       array('message' => 'No Posts Found')
     );
   }
-  C:\Users\Brenda Fonseca\Desktop\Projects\ITL-APIREST\ITL-API_REST\src\api\Classes\read.php
